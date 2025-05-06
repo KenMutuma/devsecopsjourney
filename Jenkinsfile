@@ -5,6 +5,10 @@ pipeline {
         pollSCM 'H/1 * * * *'
     }
 
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials ('rubbicon-dockerhub')
+    }
+
     stages {
         stage('Setup Node') {
             steps {
@@ -40,6 +44,21 @@ pipeline {
                 sh 'docker build -t rubbicon/devsecopsjourney .'
                
             }
+        }
+      stage('Login') {
+          steps {
+              sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+          }
+      }
+      stage ('push'){
+          steps {
+            sh 'docker push rubbicon/devsecopsjourney:$BUILD_ID'
+           }  
+         }
+    }
+    post {
+        always {
+            sh 'docker logout'
         }
     }
 }
