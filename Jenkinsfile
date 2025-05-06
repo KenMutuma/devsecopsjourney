@@ -41,7 +41,7 @@ pipeline {
        stage('Building') {
             steps {
                 echo 'Building....'
-                sh 'docker build -t rubbicon/devsecopsjourney .'
+                sh 'docker build -t rubbicon/devsecopsjourney:$BUILD_ID .'
                
             }
         }
