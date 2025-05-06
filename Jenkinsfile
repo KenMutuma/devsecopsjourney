@@ -27,11 +27,18 @@ pipeline {
                 sh 'npm run test:unit'
             }
         }
-        stage('Build') {
+        // stage('Build') {
+        //     steps {
+        //         echo 'Building....'
+        //         sh 'npm run build'
+        //         archiveArtifacts artifacts: 'dist/**', fingerprint: true
+        //     }
+        // }
+       stage('Building') {
             steps {
                 echo 'Building....'
-                sh 'npm run build'
-                archiveArtifacts artifacts: 'dist/**', fingerprint: true
+                sh 'docker build -t rubbicon/devsecopsjourney .'
+               
             }
         }
     }
