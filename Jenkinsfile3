@@ -43,10 +43,17 @@ pipeline {
             steps {
                 // echo 'Building....'
                 script {
-                       dockerImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}", "--build-arg BUILD_ID=${env.BUILD_ID} ") 
+                        sh 'docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} --build-arg BUILD_ID=${BUILD_ID} .'
                 }               
             }
         }
+       stage('Security Scan') {
+           steps {
+               script {
+                  sh 'docker scan ${DOCKER_IMAGE}:${BUILD_NUMBER}'
+              }
+           }
+       }
       stage('Login') {
           steps {
               sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
@@ -54,7 +61,7 @@ pipeline {
       }
       stage ('Push'){
           steps {
-            sh 'docker push $DOCKER_IMAGE:$BUILD_ID'
+            sh 'docker push $DOCKER_IMAGE:$BUILD_NUMBER'
            }  
          }
     }
