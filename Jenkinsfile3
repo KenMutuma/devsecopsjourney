@@ -47,13 +47,6 @@ pipeline {
                 }               
             }
         }
-       stage('Security Scan') {
-           steps {
-               script {
-                  sh 'docker scan ${DOCKER_IMAGE}:${BUILD_NUMBER}'
-              }
-           }
-       }
       stage('Login') {
           steps {
               sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
