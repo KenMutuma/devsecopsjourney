@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        pollSCM 'H/1 * * * *'
+        pollSCM 'H/5 * * * *'
     }
 
     environment {
@@ -45,7 +45,7 @@ pipeline {
                
             }
         }
-      stage('Login') {
+      stage('login') {
           steps {
               sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
           }
